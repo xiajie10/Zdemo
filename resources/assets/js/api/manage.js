@@ -3,7 +3,7 @@ import { axios } from '@/utils/request'
 const api = {
   user: '/user',
   role: '/role',
-  service: '/service',
+  products: 'api/products',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree'
@@ -29,7 +29,7 @@ export function getRoleList (parameter) {
 
 export function getServiceList (parameter) {
   return axios({
-    url: api.service,
+    url: api.products,
     method: 'get',
     params: parameter
   })

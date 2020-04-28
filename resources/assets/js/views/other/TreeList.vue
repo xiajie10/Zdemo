@@ -50,11 +50,14 @@
 </template>
 
 <script>
+    const STATUS = {
+        1: '启用',
+        2: '禁用'
+    }
 import STree from '@/components/Tree/Tree'
 import { STable } from '@/components'
 import OrgModal from './modules/OrgModal'
-import { getOrgTree, getServiceList } from '@/api/manage'
-
+    import { getOrgTree, getServiceList } from '@/api/manage'
 export default {
   name: 'TreeList',
   components: {
@@ -72,27 +75,39 @@ export default {
       columns: [
         {
           title: '#',
-          dataIndex: 'no'
+          dataIndex: 'product_id',
+            customRender: (text) =>'No'+text
         },
         {
-          title: '成员名称',
-          dataIndex: 'description'
+          title: '图片',
+          dataIndex: 'img'
         },
         {
-          title: '登录次数',
-          dataIndex: 'callNo',
+          title: '商品名称',
+          dataIndex: 'name',
           sorter: true,
           needTotal: true,
           customRender: (text) => text + ' 次'
         },
         {
           title: '状态',
-          dataIndex: 'status',
-          needTotal: true
+          dataIndex: 'state',
+          needTotal: true,
+          scopedSlots: { customRender: 'status' }
         },
+          {
+              title: '数量',
+              dataIndex: 'number',
+              needTotal: true
+          },
+          {
+              title: '创建时间',
+              dataIndex: 'created_at',
+              sorter: true
+          },
         {
           title: '更新时间',
-          dataIndex: 'updatedAt',
+          dataIndex: 'updated_at',
           sorter: true
         },
         {
@@ -103,11 +118,11 @@ export default {
         }
       ],
       // 加载数据方法 必须为 Promise 对象
-      loadData: parameter => {
-        return getServiceList(Object.assign(parameter, this.queryParam))
-          .then(res => {
-            return res.result
-          })
+      loadData:parameter => {
+          return getServiceList(Object.assign(parameter, this.queryParam))
+              .then(res => {
+                  return res
+              })
       },
       orgTree: [],
       selectedRowKeys: [],
@@ -115,28 +130,25 @@ export default {
     }
   },
   created () {
-    getOrgTree().then(res => {
-      this.orgTree = res.result
-    })
+
   },
   methods: {
     handleClick (e) {
-      console.log('handleClick', e)
       this.queryParam = {
         key: e.key
       }
       this.$refs.table.refresh(true)
     },
     handleAdd (item) {
-      console.log('add button, item', item)
+
       this.$message.info(`提示：你点了 ${item.key} - ${item.title} `)
       this.$refs.modal.add(item.key)
     },
     handleTitleClick (item) {
-      console.log('handleTitleClick', item)
+
     },
     titleClick (e) {
-      console.log('titleClick', e)
+
     },
     handleSaveOk () {
 

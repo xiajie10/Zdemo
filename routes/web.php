@@ -23,4 +23,5 @@ Auth::routes();
 Route::group(array('prefix'=>'wxApp'),function(){
     Route::get('showMentors','WxApp\MentorController@index');//走马灯
     Route::get('files','WxApp\fileController@index');//图片上传
+    Route::get('products/index','WxApp\productController@index'); //产品
 });

@@ -68,8 +68,8 @@ export const asyncRouterMap = [
                 {
                     path: '/list/card',
                     name: 'CardList',
-                    component: () => import('@/views/list/CardList'),
-                    meta: { title: '卡片列表', keepAlive: true, permission: [ 'table' ] }
+                    component: () => import('@/views/other/TreeList'),
+                    meta: { title: '商品', keepAlive: true, permission: [ 'table' ] }
                 },
             ]
         },

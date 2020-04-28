@@ -9,10 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Tree_Tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/Tree/Tree */ "./resources/assets/js/components/Tree/Tree.jsx");
-/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components */ "./resources/assets/js/components/index.js");
-/* harmony import */ var _modules_OrgModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/OrgModal */ "./resources/assets/js/views/other/modules/OrgModal.vue");
-/* harmony import */ var _api_manage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/manage */ "./resources/assets/js/api/manage.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Tree_Tree__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/Tree/Tree */ "./resources/assets/js/components/Tree/Tree.jsx");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components */ "./resources/assets/js/components/index.js");
+/* harmony import */ var _modules_OrgModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/OrgModal */ "./resources/assets/js/views/other/modules/OrgModal.vue");
+/* harmony import */ var _api_manage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/manage */ "./resources/assets/js/api/manage.js");
+
 //
 //
 //
@@ -64,6 +67,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var STATUS = {
+  1: '启用',
+  2: '禁用'
+};
 
 
 
@@ -71,9 +78,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'TreeList',
   components: {
-    STable: _components__WEBPACK_IMPORTED_MODULE_1__["STable"],
-    STree: _components_Tree_Tree__WEBPACK_IMPORTED_MODULE_0__["default"],
-    OrgModal: _modules_OrgModal__WEBPACK_IMPORTED_MODULE_2__["default"]
+    STable: _components__WEBPACK_IMPORTED_MODULE_2__["STable"],
+    STree: _components_Tree_Tree__WEBPACK_IMPORTED_MODULE_1__["default"],
+    OrgModal: _modules_OrgModal__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     var _this = this;
@@ -85,13 +92,16 @@ __webpack_require__.r(__webpack_exports__);
       // 表头
       columns: [{
         title: '#',
-        dataIndex: 'no'
+        dataIndex: 'product_id',
+        customRender: function customRender(text) {
+          return 'No' + text;
+        }
       }, {
-        title: '成员名称',
-        dataIndex: 'description'
+        title: '图片',
+        dataIndex: 'img'
       }, {
-        title: '登录次数',
-        dataIndex: 'callNo',
+        title: '商品名称',
+        dataIndex: 'name',
         sorter: true,
         needTotal: true,
         customRender: function customRender(text) {
@@ -99,11 +109,22 @@ __webpack_require__.r(__webpack_exports__);
         }
       }, {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'state',
+        needTotal: true,
+        scopedSlots: {
+          customRender: 'status'
+        }
+      }, {
+        title: '数量',
+        dataIndex: 'number',
         needTotal: true
       }, {
+        title: '创建时间',
+        dataIndex: 'created_at',
+        sorter: true
+      }, {
         title: '更新时间',
-        dataIndex: 'updatedAt',
+        dataIndex: 'updated_at',
         sorter: true
       }, {
         title: '操作',
@@ -115,8 +136,8 @@ __webpack_require__.r(__webpack_exports__);
       }],
       // 加载数据方法 必须为 Promise 对象
       loadData: function loadData(parameter) {
-        return Object(_api_manage__WEBPACK_IMPORTED_MODULE_3__["getServiceList"])(Object.assign(parameter, _this.queryParam)).then(function (res) {
-          return res.result;
+        return Object(_api_manage__WEBPACK_IMPORTED_MODULE_4__["getServiceList"])(Object.assign(parameter, _this.queryParam)).then(function (res) {
+          return res;
         });
       },
       orgTree: [],
@@ -124,32 +145,20 @@ __webpack_require__.r(__webpack_exports__);
       selectedRows: []
     };
   },
-  created: function created() {
-    var _this2 = this;
-
-    Object(_api_manage__WEBPACK_IMPORTED_MODULE_3__["getOrgTree"])().then(function (res) {
-      _this2.orgTree = res.result;
-    });
-  },
+  created: function created() {},
   methods: {
     handleClick: function handleClick(e) {
-      console.log('handleClick', e);
       this.queryParam = {
         key: e.key
       };
       this.$refs.table.refresh(true);
     },
     handleAdd: function handleAdd(item) {
-      console.log('add button, item', item);
       this.$message.info("\u63D0\u793A\uFF1A\u4F60\u70B9\u4E86 ".concat(item.key, " - ").concat(item.title, " "));
       this.$refs.modal.add(item.key);
     },
-    handleTitleClick: function handleTitleClick(item) {
-      console.log('handleTitleClick', item);
-    },
-    titleClick: function titleClick(e) {
-      console.log('titleClick', e);
-    },
+    handleTitleClick: function handleTitleClick(item) {},
+    titleClick: function titleClick(e) {},
     handleSaveOk: function handleSaveOk() {},
     handleSaveClose: function handleSaveClose() {},
     onSelectChange: function onSelectChange(selectedRowKeys, selectedRows) {
@@ -615,7 +624,7 @@ __webpack_require__.r(__webpack_exports__);
 var api = {
   user: '/user',
   role: '/role',
-  service: '/service',
+  products: 'api/products',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree'
@@ -637,7 +646,7 @@ function getRoleList(parameter) {
 }
 function getServiceList(parameter) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["axios"])({
-    url: api.service,
+    url: api.products,
     method: 'get',
     params: parameter
   });

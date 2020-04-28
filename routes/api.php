@@ -21,3 +21,4 @@ Route::post('login', 'Auth\PassportController@login');
 Route::get('login/{token}', 'Auth\PassportController@getDetails');
 Route::resource('files','WxApp\fileController');//图片上传
 Route::resource('showMentors','WxApp\MentorController');
+Route::resource('products','WxApp\productController'); //产品

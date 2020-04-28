@@ -884,7 +884,7 @@ __webpack_require__.r(__webpack_exports__);
 var api = {
   user: '/user',
   role: '/role',
-  service: '/service',
+  products: 'api/products',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree'
@@ -906,7 +906,7 @@ function getRoleList(parameter) {
 }
 function getServiceList(parameter) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["axios"])({
-    url: api.service,
+    url: api.products,
     method: 'get',
     params: parameter
   });
